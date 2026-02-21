@@ -555,7 +555,7 @@ function renderResult(app){
   const btnBack = el("button", { onclick: () => { step = QUESTIONS.length-1; render(); } }, "Voltar e revisar");
   const btnRestart = el("button", { class:"danger", onclick: () => { answers.clear(); step = 0; render(); } }, "Fazer novamente");
 
-  body.appendChild(el("div", {class:"actions"}, el("div", {}, btnBack), el("div", {}, btnRestart)));
+  app.appendChild(el("div", {class:"actions"}, el("div", {}, btnBack), el("div", {}, btnRestart)));
 
   window.onkeydown = null;
 }

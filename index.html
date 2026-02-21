@@ -535,14 +535,14 @@ function renderResult(app){
   // Explicação rápida (personalizável)
   const info = COURSE_INFO[top.course];
   if (info?.bullets?.length){
-    app.appendChild(el("p", {class:"muted", style:"margin-top:12px"}, "Por que esse curso combina com você:"));
+    body.appendChild(el("p", {class:"muted", style:"margin-top:12px"}, "Por que esse curso combina com você:"));
     const ul = el("ul", {class:"list"});
     info.bullets.forEach(b => ul.appendChild(el("li", {}, b)));
-    app.appendChild(ul);
+    body.appendChild(ul);
   }
 
   // Transparência: exibir pontuação
-  app.appendChild(el("p", {class:"muted small", style:"margin-top:12px"},
+  body.appendChild(el("p", {class:"muted small", style:"margin-top:12px"},
     "Pontuação (para transparência):"
   ));
   const ul2 = el("ul", {class:"list small"});
@@ -550,12 +550,12 @@ function renderResult(app){
     const n = COURSE_INFO[x.course]?.name || x.course;
     ul2.appendChild(el("li", {}, `${n}: ${x.pts} ponto(s)`));
   });
-  app.appendChild(ul2);
+  body.appendChild(ul2);
 
   const btnBack = el("button", { onclick: () => { step = QUESTIONS.length-1; render(); } }, "Voltar e revisar");
   const btnRestart = el("button", { class:"danger", onclick: () => { answers.clear(); step = 0; render(); } }, "Fazer novamente");
 
-  app.appendChild(el("div", {class:"actions"}, el("div", {}, btnBack), el("div", {}, btnRestart)));
+  body.appendChild(el("div", {class:"actions"}, el("div", {}, btnBack), el("div", {}, btnRestart)));
 
   window.onkeydown = null;
 }

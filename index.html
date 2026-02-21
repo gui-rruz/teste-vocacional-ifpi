@@ -390,7 +390,7 @@ function render(){
   app.innerHTML = "";
 
   app.classList.add("window"); // garante o estilo
-  body.appendChild(el("div", { class:"windowTop" },
+  app.appendChild(el("div", { class:"windowTop" },
     el("div", { class:"dots" },
       el("span", { class:"dot" }),
       el("span", { class:"dot" }),
@@ -400,7 +400,7 @@ function render(){
   ));
 
   const body = el("div", { class:"content" });
-  body.appendChild(body);
+  app.appendChild(body);
 
   if (QUESTIONS.length === 0){
     body.appendChild(el("p", {class:"muted"}, "Nenhuma pergunta configurada ainda. Preencha o array QUESTIONS no código."));
@@ -555,7 +555,7 @@ function renderResult(app){
   const btnBack = el("button", { onclick: () => { step = QUESTIONS.length-1; render(); } }, "Voltar e revisar");
   const btnRestart = el("button", { class:"danger", onclick: () => { answers.clear(); step = 0; render(); } }, "Fazer novamente");
 
-  app.appendChild(el("div", {class:"actions"}, el("div", {}, btnBack), el("div", {}, btnRestart)));
+  body.appendChild(el("div", {class:"actions"}, el("div", {}, btnBack), el("div", {}, btnRestart)));
 
   window.onkeydown = null;
 }

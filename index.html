@@ -5,79 +5,188 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Trilhas de Interesses e Afinidades - IFPI campus Floriano</title>
   <style>
-    :root{
-      --bg:#0b1220; --card:#111a2e; --text:#e8eefc; --muted:#a9b7d6;
-      --accent:#6ea8fe; --danger:#ff6b6b; --ok:#51cf66;
-    }
-    *{box-sizing:border-box}
-    body{
-      margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      background: linear-gradient(180deg, #070b14, var(--bg));
-      color:var(--text); min-height:100vh; display:flex; justify-content:center;
-      padding:18px;
-    }
-    .wrap{width:min(880px, 100%);}
-    header{margin:10px 0 16px}
-    h1{font-size:1.25rem; margin:0 0 6px}
-    p{margin:0; color:var(--muted); line-height:1.35}
-    .card{
-      background: rgba(17,26,46,.92);
-      border:1px solid rgba(110,168,254,.22);
-      border-radius:14px; padding:16px; box-shadow: 0 10px 30px rgba(0,0,0,.25);
-      backdrop-filter: blur(6px);
-    }
-    .row{display:flex; gap:12px; flex-wrap:wrap}
-    .col{flex:1 1 320px}
-    .progress{
-      height:10px; background: rgba(255,255,255,.08); border-radius:999px; overflow:hidden;
-      border:1px solid rgba(255,255,255,.08);
-      margin:14px 0 0;
-    }
-    .bar{height:100%; width:0%; background: linear-gradient(90deg, var(--accent), #9bdbff);}
-    .qtitle{font-size:1.05rem; margin:0 0 10px}
-    .opt{
-      display:flex; gap:10px; align-items:flex-start;
-      padding:12px; border-radius:12px;
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.04);
-      margin:10px 0;
-      cursor:pointer;
-      transition: transform .05s ease, border-color .15s ease, background .15s ease;
-    }
-    .opt:hover{border-color: rgba(110,168,254,.5)}
-    .opt:active{transform: scale(.995)}
-    input[type="radio"]{margin-top:2px}
-    .muted{color:var(--muted)}
-    .actions{display:flex; gap:10px; justify-content:space-between; margin-top:14px; flex-wrap:wrap}
-    button{
-      border:0; border-radius:12px; padding:10px 14px;
-      font-weight:650; cursor:pointer;
-      background: rgba(255,255,255,.10); color:var(--text);
-      border:1px solid rgba(255,255,255,.12);
-    }
-    button.primary{background: var(--accent); color:#061022; border-color: rgba(255,255,255,.0)}
-    button.danger{background: rgba(255,107,107,.18); border-color: rgba(255,107,107,.35)}
-    button:disabled{opacity:.5; cursor:not-allowed}
-    .hint{margin-top:8px; color:var(--danger); display:none}
-    .result h2{margin:0 0 10px; font-size:1.2rem}
-    .pill{
-      display:inline-flex; align-items:center; gap:8px;
-      padding:8px 10px; border-radius:999px;
-      background: rgba(110,168,254,.14);
-      border:1px solid rgba(110,168,254,.28);
-      margin:6px 6px 0 0;
-      font-weight:650;
-    }
-    .list{margin:10px 0 0; padding-left:18px; color:var(--muted)}
-    .small{font-size:.9rem}
-    .footer{margin-top:10px}
-    .kbd{
-      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-      padding:2px 6px; border-radius:8px;
-      background: rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.10);
-      color:var(--text);
-    }
-  </style>
+  :root{
+    /* Paleta inspirada no PE */
+    --bg: #eaf6df;
+    --bg2:#dff2cf;
+    --ink:#0f1b10;
+    --muted:#2f4a35;
+
+    --green:#7bd84a;
+    --green2:#9bf05f;
+    --greenDark:#2a7a2a;
+
+    --card:#ffffff;
+    --stroke: rgba(20,60,25,.22);
+
+    --shadow: 0 10px 30px rgba(0,0,0,.10);
+    --radius: 16px;
+
+    --btn:#a7f06a;
+    --btnInk:#123016;
+  }
+
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    color:var(--ink);
+    background:
+      radial-gradient(1200px 600px at 50% -10%, var(--bg2), transparent 60%),
+      linear-gradient(180deg, var(--bg), #f6fff0);
+    min-height:100vh;
+  }
+
+  /* Moldura lateral com padrão (leve) */
+  .frame{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    padding:18px;
+    position:relative;
+    overflow:hidden;
+  }
+  .frame:before, .frame:after{
+    content:"";
+    position:fixed;
+    top:0; bottom:0;
+    width:120px;
+    opacity:.22;
+    pointer-events:none;
+    background-image:
+      radial-gradient(circle at 25% 10%, #1a6b1a 0 18px, transparent 19px),
+      radial-gradient(circle at 70% 18%, #63d63d 0 12px, transparent 13px),
+      radial-gradient(circle at 40% 35%, #0f5b0f 0 9px, transparent 10px),
+      radial-gradient(circle at 75% 45%, #3baf2a 0 16px, transparent 17px),
+      radial-gradient(circle at 35% 62%, #1a6b1a 0 14px, transparent 15px),
+      radial-gradient(circle at 70% 72%, #63d63d 0 10px, transparent 11px),
+      radial-gradient(circle at 45% 88%, #0f5b0f 0 12px, transparent 13px);
+    background-repeat:no-repeat;
+  }
+  .frame:before{left:0}
+  .frame:after{right:0; transform: scaleX(-1);}
+
+  .wrap{width:min(920px, 100%)}
+
+  /* “Faixa” de título igual ao PE */
+  .ribbon{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    padding:10px 14px;
+    border-radius:999px;
+    background: linear-gradient(90deg, var(--green), var(--green2));
+    color:#0b220f;
+    font-weight:800;
+    letter-spacing:.3px;
+    box-shadow: 0 8px 16px rgba(0,0,0,.08);
+    border:1px solid rgba(0,0,0,.06);
+  }
+
+  header{margin:10px 0 14px}
+  h1{margin:10px 0 6px; font-size:1.25rem}
+  p{margin:0; color:var(--muted); line-height:1.35}
+
+  /* Card tipo “janela/caixa” */
+  .window{
+    background:var(--card);
+    border:1px solid var(--stroke);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    overflow:hidden;
+  }
+  .windowTop{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:10px 12px;
+    background: linear-gradient(180deg, #f7fff0, #e8f7db);
+    border-bottom:1px solid var(--stroke);
+  }
+  .dots{display:flex; gap:6px}
+  .dot{
+    width:10px; height:10px; border-radius:50%;
+    border:1px solid rgba(0,0,0,.12);
+    background:#cfe9c1;
+  }
+  .dot:nth-child(2){background:#bdebb0}
+  .dot:nth-child(3){background:#a6e59a}
+  .winTitle{font-weight:800; color:#1f4c24; font-size:.95rem}
+
+  .content{padding:14px}
+
+  /* Alternativas */
+  .opt{
+    display:flex;
+    gap:10px;
+    align-items:flex-start;
+    padding:12px;
+    border-radius:14px;
+    border:1px solid rgba(20,60,25,.18);
+    background: #f8fff3;
+    margin:10px 0;
+    cursor:pointer;
+    transition: transform .05s ease, border-color .15s ease, background .15s ease;
+  }
+  .opt:hover{border-color: rgba(42,122,42,.35); background:#f2ffe9}
+  .opt:active{transform: scale(.995)}
+  input[type="radio"]{margin-top:2px}
+
+  /* Barra de progresso */
+  .progress{
+    height:10px;
+    background: rgba(42,122,42,.12);
+    border-radius:999px;
+    overflow:hidden;
+    border:1px solid rgba(42,122,42,.18);
+    margin-top:12px;
+  }
+  .bar{height:100%; width:0%; background: linear-gradient(90deg, var(--greenDark), var(--green2));}
+
+  /* Botões */
+  .actions{
+    display:flex;
+    gap:10px;
+    justify-content:space-between;
+    margin-top:14px;
+    flex-wrap:wrap;
+  }
+  button{
+    border:1px solid rgba(20,60,25,.20);
+    border-radius:14px;
+    padding:10px 14px;
+    font-weight:800;
+    cursor:pointer;
+    background:#f7fff0;
+    color:#143b19;
+  }
+  button.primary{
+    background: linear-gradient(90deg, var(--btn), var(--green2));
+    color:var(--btnInk);
+    border-color: rgba(20,60,25,.10);
+  }
+  button.danger{
+    background:#fff0f0;
+    color:#5a1f1f;
+  }
+  button:disabled{opacity:.55; cursor:not-allowed}
+
+  .hint{margin-top:8px; color:#7a1f1f; display:none; font-weight:700}
+  .pill{
+    display:inline-flex;
+    align-items:center;
+    padding:8px 10px;
+    border-radius:999px;
+    background: rgba(123,216,74,.18);
+    border:1px solid rgba(42,122,42,.20);
+    margin:6px 6px 0 0;
+    font-weight:800;
+    color:#1c4b22;
+  }
+
+  .list{margin:10px 0 0; padding-left:18px; color:var(--muted)}
+  .small{font-size:.92rem}
+</style>
 </head>
 <body>
   <div class="wrap">

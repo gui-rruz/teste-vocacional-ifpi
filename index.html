@@ -1,0 +1,395 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Teste Vocacional - IFPI Floriano</title>
+  <style>
+    :root{
+      --bg:#0b1220; --card:#111a2e; --text:#e8eefc; --muted:#a9b7d6;
+      --accent:#6ea8fe; --danger:#ff6b6b; --ok:#51cf66;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background: linear-gradient(180deg, #070b14, var(--bg));
+      color:var(--text); min-height:100vh; display:flex; justify-content:center;
+      padding:18px;
+    }
+    .wrap{width:min(880px, 100%);}
+    header{margin:10px 0 16px}
+    h1{font-size:1.25rem; margin:0 0 6px}
+    p{margin:0; color:var(--muted); line-height:1.35}
+    .card{
+      background: rgba(17,26,46,.92);
+      border:1px solid rgba(110,168,254,.22);
+      border-radius:14px; padding:16px; box-shadow: 0 10px 30px rgba(0,0,0,.25);
+      backdrop-filter: blur(6px);
+    }
+    .row{display:flex; gap:12px; flex-wrap:wrap}
+    .col{flex:1 1 320px}
+    .progress{
+      height:10px; background: rgba(255,255,255,.08); border-radius:999px; overflow:hidden;
+      border:1px solid rgba(255,255,255,.08);
+      margin:14px 0 0;
+    }
+    .bar{height:100%; width:0%; background: linear-gradient(90deg, var(--accent), #9bdbff);}
+    .qtitle{font-size:1.05rem; margin:0 0 10px}
+    .opt{
+      display:flex; gap:10px; align-items:flex-start;
+      padding:12px; border-radius:12px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.04);
+      margin:10px 0;
+      cursor:pointer;
+      transition: transform .05s ease, border-color .15s ease, background .15s ease;
+    }
+    .opt:hover{border-color: rgba(110,168,254,.5)}
+    .opt:active{transform: scale(.995)}
+    input[type="radio"]{margin-top:2px}
+    .muted{color:var(--muted)}
+    .actions{display:flex; gap:10px; justify-content:space-between; margin-top:14px; flex-wrap:wrap}
+    button{
+      border:0; border-radius:12px; padding:10px 14px;
+      font-weight:650; cursor:pointer;
+      background: rgba(255,255,255,.10); color:var(--text);
+      border:1px solid rgba(255,255,255,.12);
+    }
+    button.primary{background: var(--accent); color:#061022; border-color: rgba(255,255,255,.0)}
+    button.danger{background: rgba(255,107,107,.18); border-color: rgba(255,107,107,.35)}
+    button:disabled{opacity:.5; cursor:not-allowed}
+    .hint{margin-top:8px; color:var(--danger); display:none}
+    .result h2{margin:0 0 10px; font-size:1.2rem}
+    .pill{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:8px 10px; border-radius:999px;
+      background: rgba(110,168,254,.14);
+      border:1px solid rgba(110,168,254,.28);
+      margin:6px 6px 0 0;
+      font-weight:650;
+    }
+    .list{margin:10px 0 0; padding-left:18px; color:var(--muted)}
+    .small{font-size:.9rem}
+    .footer{margin-top:10px}
+    .kbd{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      padding:2px 6px; border-radius:8px;
+      background: rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.10);
+      color:var(--text);
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1>Teste vocacional — IFPI (Campus Floriano)</h1>
+      <p>Responda com calma. No final, você verá o curso técnico integrado ao ensino médio mais alinhado com seu perfil.</p>
+      <div class="progress" aria-label="Progresso do teste"><div class="bar" id="bar"></div></div>
+    </header>
+
+    <main class="card" id="app"></main>
+
+    <div class="footer muted small">
+      Dica: ao hospedar, basta colocar o link no PDF do Produto Educacional.
+    </div>
+  </div>
+
+<script>
+/**
+ * 1) CONFIGURE AQUI
+ * Coloque suas perguntas no formato abaixo.
+ *
+ * - id: string única
+ * - text: enunciado
+ * - options: cada opção tem:
+ *   - label: texto exibido
+ *   - score: objeto { curso: pontos, ... }
+ *
+ * Cursos: "Edificacoes", "Administracao", "Eletromecanica", "MeioAmbiente", "Informatica"
+ */
+const QUESTIONS = [
+  {
+    id: "q1",
+    text: "Qual tipo de atividade você prefere?",
+    options: [
+      { label: "Resolver problemas no computador, criar coisas digitais", score: { Informatica: 2 } },
+      { label: "Organizar tarefas, planejar e lidar com rotinas", score: { Administracao: 2 } },
+      { label: "Trabalhar com projetos e construções (plantas, medidas)", score: { Edificacoes: 2 } },
+      { label: "Montar/consertar equipamentos e entender como funcionam", score: { Eletromecanica: 2 } },
+      { label: "Atividades ligadas à natureza, sustentabilidade e impacto ambiental", score: { MeioAmbiente: 2 } },
+    ],
+  },
+  {
+    id: "q2",
+    text: "Quando você está aprendendo algo novo, o que te anima mais?",
+    options: [
+      { label: "Programar, automatizar e testar ideias", score: { Informatica: 2, Eletromecanica: 1 } },
+      { label: "Fazer contas, analisar custos e tomar decisões", score: { Administracao: 2 } },
+      { label: "Desenhar/interpretar projetos e ver algo ser construído", score: { Edificacoes: 2 } },
+      { label: "Fazer experimentos e entender energia, motores e circuitos", score: { Eletromecanica: 2 } },
+      { label: "Pesquisar sobre conservação, resíduos e recursos naturais", score: { MeioAmbiente: 2 } },
+    ],
+  },
+  // ✅ Substitua/adicione aqui suas perguntas...
+];
+
+// Textos extras (opcional): aparecem junto do resultado
+const COURSE_INFO = {
+  Edificacoes: {
+    name: "Edificações",
+    bullets: [
+      "Projetos, desenho técnico e noções de construção",
+      "Medições, materiais e planejamento de obras",
+    ],
+  },
+  Administracao: {
+    name: "Administração",
+    bullets: [
+      "Organização, planejamento e rotinas de gestão",
+      "Finanças básicas, processos e atendimento",
+    ],
+  },
+  Eletromecanica: {
+    name: "Eletromecânica",
+    bullets: [
+      "Motores, máquinas, manutenção e sistemas elétricos",
+      "Raciocínio lógico e prática com equipamentos",
+    ],
+  },
+  MeioAmbiente: {
+    name: "Meio Ambiente",
+    bullets: [
+      "Sustentabilidade, resíduos, água e impacto ambiental",
+      "Coleta/análise de dados e práticas de conservação",
+    ],
+  },
+  Informatica: {
+    name: "Informática",
+    bullets: [
+      "Programação, redes, sistemas e solução de problemas",
+      "Criação de projetos digitais e tecnologia no dia a dia",
+    ],
+  },
+};
+
+/* 2) LÓGICA DO TESTE (não precisa mexer) */
+
+const COURSES = ["Edificacoes","Administracao","Eletromecanica","MeioAmbiente","Informatica"];
+
+let step = 0;
+const answers = new Map(); // qid -> optionIndex
+
+function baseScores(){
+  const s = {};
+  for (const c of COURSES) s[c] = 0;
+  return s;
+}
+
+function computeScores(){
+  const scores = baseScores();
+  for (const q of QUESTIONS){
+    const idx = answers.get(q.id);
+    if (idx == null) continue;
+    const opt = q.options[idx];
+    for (const [course, pts] of Object.entries(opt.score || {})){
+      if (scores[course] == null) scores[course] = 0;
+      scores[course] += Number(pts) || 0;
+    }
+  }
+  return scores;
+}
+
+function ranking(scores){
+  const arr = Object.entries(scores).map(([course, pts]) => ({ course, pts }));
+  arr.sort((a,b)=> b.pts - a.pts);
+  return arr;
+}
+
+function setProgress(){
+  const done = answers.size;
+  const total = QUESTIONS.length;
+  const pct = total === 0 ? 0 : Math.round((done/total)*100);
+  document.getElementById("bar").style.width = pct + "%";
+}
+
+function el(tag, attrs={}, ...children){
+  const n = document.createElement(tag);
+  for (const [k,v] of Object.entries(attrs)){
+    if (k === "class") n.className = v;
+    else if (k.startsWith("on") && typeof v === "function") n.addEventListener(k.slice(2), v);
+    else n.setAttribute(k, v);
+  }
+  for (const ch of children){
+    if (ch == null) continue;
+    n.appendChild(typeof ch === "string" ? document.createTextNode(ch) : ch);
+  }
+  return n;
+}
+
+function render(){
+  setProgress();
+  const app = document.getElementById("app");
+  app.innerHTML = "";
+
+  if (QUESTIONS.length === 0){
+    app.appendChild(el("p", {class:"muted"}, "Nenhuma pergunta configurada ainda. Preencha o array QUESTIONS no código."));
+    return;
+  }
+
+  if (step >= QUESTIONS.length){
+    renderResult(app);
+    return;
+  }
+
+  const q = QUESTIONS[step];
+  const selected = answers.get(q.id);
+
+  app.appendChild(el("div", {class:"row"},
+    el("div", {class:"col"},
+      el("h2", {class:"qtitle"}, `Pergunta ${step+1} de ${QUESTIONS.length}`),
+      el("p", {class:"muted"}, q.text),
+    ),
+    el("div", {class:"col muted small"},
+      el("p", {}, "Cursos avaliados:"),
+      el("div", {},
+        el("span", {class:"pill"}, "Edificações"),
+        el("span", {class:"pill"}, "Administração"),
+        el("span", {class:"pill"}, "Eletromecânica"),
+        el("span", {class:"pill"}, "Meio Ambiente"),
+        el("span", {class:"pill"}, "Informática"),
+      ),
+      el("p", {style:"margin-top:10px"},
+        "Atalho (PC): ",
+        el("span", {class:"kbd"}, "Enter"),
+        " para avançar."
+      )
+    )
+  ));
+
+  const form = el("div", {});
+  const hint = el("div", {class:"hint", id:"hint"}, "Escolha uma opção para continuar.");
+
+  q.options.forEach((opt, i) => {
+    const id = `${q.id}_opt_${i}`;
+    const radio = el("input", { type:"radio", name:q.id, id, value:String(i) });
+    if (selected === i) radio.checked = true;
+
+    const label = el("label", { class:"opt", for:id },
+      radio,
+      el("div", {},
+        el("div", {}, opt.label),
+        opt.help ? el("div", {class:"muted small", style:"margin-top:4px"}, opt.help) : null
+      )
+    );
+
+    label.addEventListener("click", () => {
+      answers.set(q.id, i);
+      hint.style.display = "none";
+      setProgress();
+    });
+
+    form.appendChild(label);
+  });
+
+  app.appendChild(form);
+  app.appendChild(hint);
+
+  const btnPrev = el("button", {
+    onclick: () => { step = Math.max(0, step-1); render(); },
+    disabled: step === 0
+  }, "Voltar");
+
+  const btnReset = el("button", {
+    class:"danger",
+    onclick: () => {
+      answers.clear(); step = 0; render();
+    }
+  }, "Reiniciar");
+
+  const btnNext = el("button", {
+    class:"primary",
+    onclick: () => {
+      if (!answers.has(q.id)){
+        hint.style.display = "block";
+        return;
+      }
+      step = Math.min(QUESTIONS.length, step+1);
+      render();
+    }
+  }, step === QUESTIONS.length-1 ? "Ver resultado" : "Próxima");
+
+  app.appendChild(el("div", {class:"actions"}, el("div", {}, btnPrev, " ", btnReset), el("div", {}, btnNext)));
+
+  // Enter para avançar no PC
+  window.onkeydown = (e) => {
+    if (e.key === "Enter"){
+      e.preventDefault();
+      btnNext.click();
+    }
+  };
+}
+
+function renderResult(app){
+  const scores = computeScores();
+  const rank = ranking(scores);
+  const top = rank[0];
+  const second = rank[1];
+
+  const topName = COURSE_INFO[top.course]?.name || top.course;
+  const secondName = COURSE_INFO[second.course]?.name || second.course;
+
+  app.classList.add("result");
+  app.appendChild(el("h2", {}, "Resultado do teste"));
+  app.appendChild(el("p", {class:"muted"},
+    `Com base nas suas respostas, o curso mais indicado é: `
+  ));
+  app.appendChild(el("div", {style:"margin:10px 0 4px"},
+    el("span", {class:"pill", style:"font-size:1.05rem"}, `✅ ${topName}`)
+  ));
+
+  // Mostra top 3
+  const top3 = rank.slice(0,3).filter(x=>x.pts>0 || rank.length<=3);
+  const top3Line = el("p", {class:"muted", style:"margin-top:10px"},
+    "Outras possibilidades próximas: "
+  );
+  app.appendChild(top3Line);
+  app.appendChild(el("div", {},
+    ...top3.map((x, idx) => {
+      const n = COURSE_INFO[x.course]?.name || x.course;
+      const label = idx === 0 ? `1º ${n}` : `${idx+1}º ${n}`;
+      return el("span", {class:"pill"}, label);
+    })
+  ));
+
+  // Explicação rápida (personalizável)
+  const info = COURSE_INFO[top.course];
+  if (info?.bullets?.length){
+    app.appendChild(el("p", {class:"muted", style:"margin-top:12px"}, "Por que esse curso combina com você:"));
+    const ul = el("ul", {class:"list"});
+    info.bullets.forEach(b => ul.appendChild(el("li", {}, b)));
+    app.appendChild(ul);
+  }
+
+  // Transparência: exibir pontuação
+  app.appendChild(el("p", {class:"muted small", style:"margin-top:12px"},
+    "Pontuação (para transparência):"
+  ));
+  const ul2 = el("ul", {class:"list small"});
+  rank.forEach(x => {
+    const n = COURSE_INFO[x.course]?.name || x.course;
+    ul2.appendChild(el("li", {}, `${n}: ${x.pts} ponto(s)`));
+  });
+  app.appendChild(ul2);
+
+  const btnBack = el("button", { onclick: () => { step = QUESTIONS.length-1; render(); } }, "Voltar e revisar");
+  const btnRestart = el("button", { class:"danger", onclick: () => { answers.clear(); step = 0; render(); } }, "Fazer novamente");
+
+  app.appendChild(el("div", {class:"actions"}, el("div", {}, btnBack), el("div", {}, btnRestart)));
+
+  window.onkeydown = null;
+}
+
+render();
+</script>
+</body>
+</html>

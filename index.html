@@ -368,7 +368,124 @@ function el(tag, attrs={}, ...children){
   return n;
 }
 
-function render(){
+  function render(){
+  setProgress();
+
+  const app = document.getElementById("app");
+  app.innerHTML = "";
+
+  // Caso não existam perguntas
+  if (QUESTIONS.length === 0){
+    app.classList.add("window");
+    app.appendChild(el("div", { class:"windowTop" },
+      el("div", { class:"dots" },
+        el("span", { class:"dot" }),
+        el("span", { class:"dot" }),
+        el("span", { class:"dot" }),
+      ),
+      el("div", { class:"winTitle" }, "Questionário")
+    ));
+    const body = el("div", { class:"content" });
+    body.appendChild(el("p", { class:"muted" }, "Nenhuma pergunta configurada ainda. Preencha o array QUESTIONS no código."));
+    app.appendChild(body);
+    return;
+  }
+
+  // Cria a “janela” (barra superior + corpo)
+  app.classList.add("window");
+  app.appendChild(el("div", { class:"windowTop" },
+    el("div", { class:"dots" },
+      el("span", { class:"dot" }),
+      el("span", { class:"dot" }),
+      el("span", { class:"dot" }),
+    ),
+    el("div", { class:"winTitle" }, step >= QUESTIONS.length ? "Resultado" : "Questionário")
+  ));
+  const body = el("div", { class:"content" });
+  app.appendChild(body);
+
+  // Se acabou as perguntas, mostra resultado
+  if (step >= QUESTIONS.length){
+    renderResult(body);   // 👈 importante: agora manda pro "body"
+    return;
+  }
+
+  const q = QUESTIONS[step];
+  const selected = answers.get(q.id);
+
+  // Cabeçalho da pergunta
+  body.appendChild(el("h2", { class:"qtitle" }, `Pergunta ${step+1} de ${QUESTIONS.length}`));
+  body.appendChild(el("p", { class:"muted" }, q.text));
+
+  // Opções
+  const form = el("div", {});
+  const hint = el("div", { class:"hint", id:"hint" }, "Escolha uma opção para continuar.");
+
+  q.options.forEach((opt, i) => {
+    const id = `${q.id}_opt_${i}`;
+    const radio = el("input", { type:"radio", name:q.id, id, value:String(i) });
+    if (selected === i) radio.checked = true;
+
+    const label = el("label", { class:"opt", for:id },
+      radio,
+      el("div", {},
+        el("div", {}, opt.label),
+        opt.help ? el("div", { class:"muted small", style:"margin-top:4px" }, opt.help) : null
+      )
+    );
+
+    // Marca a resposta
+    label.addEventListener("click", () => {
+      answers.set(q.id, i);
+      hint.style.display = "none";
+      setProgress();
+    });
+
+    form.appendChild(label);
+  });
+
+  body.appendChild(form);
+  body.appendChild(hint);
+
+  // Botões
+  const btnPrev = el("button", {
+    onclick: () => { step = Math.max(0, step-1); render(); },
+    disabled: step === 0
+  }, "Voltar");
+
+  const btnReset = el("button", {
+    class:"danger",
+    onclick: () => {
+      answers.clear(); step = 0; render();
+    }
+  }, "Reiniciar");
+
+  const btnNext = el("button", {
+    class:"primary",
+    onclick: () => {
+      if (!answers.has(q.id)){
+        hint.style.display = "block";
+        return;
+      }
+      step = Math.min(QUESTIONS.length, step+1);
+      render();
+    }
+  }, step === QUESTIONS.length-1 ? "Ver resultado" : "Próxima");
+
+  body.appendChild(el("div", { class:"actions" },
+    el("div", {}, btnPrev, " ", btnReset),
+    el("div", {}, btnNext)
+  ));
+
+  // Enter avança no PC
+  window.onkeydown = (e) => {
+    if (e.key === "Enter"){
+      e.preventDefault();
+      btnNext.click();
+    }
+  };
+}
+
   setProgress();
   const app = document.getElementById("app");
   app.innerHTML = "";
@@ -409,7 +526,7 @@ body.appendChild(el("div", { class:"windowTop" },
   el("div", { class:"winTitle" }, "Questionário")
 ));
 
-const body = el("div", { class:"content" });
+const app = el("div", { class:"content" });
 body.appendChild(body);(el("div", {class:"row"},
     el("div", {class:"col"},
       el("h2", {class:"qtitle"}, `Pergunta ${step+1} de ${QUESTIONS.length}`),

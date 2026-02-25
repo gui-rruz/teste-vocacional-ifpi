@@ -189,7 +189,7 @@
     <div class="wrap">
       <header>
         <div class="ribbon">Trilhas de Interesses e Afinidades — IFPI (Campus Floriano)</div>
-        <p>Leia as situações e escolha a alternativa (A, B, C, D ou E) que melhor descreve você.</p>
+        <h1>Leia as situações e escolha a alternativa (A, B, C, D ou E) que melhor descreve você.</h1>
         <div class="progress"><div class="bar" id="bar"></div></div>
       </header>
       <main class="card" id="app"></main>
@@ -268,13 +268,78 @@ const QUESTIONS = [
     text: "Como você prefere passar seu tempo livre focado em algo produtivo?",
     options: [
       { label: "A) Consertando algum objeto quebrado ou mexendo em ferramentas.", score: { Eletromecanica: 1 } },
-      { label: "B) Fazendo desenhos detalhados ou montando estruturas (tipo LEGO).", score: { Edificacoes: 1 } },
+      { label: "B) Fazendo desenhos detalhados ou montando estruturas (tipo minecraft ou The Sims).", score: { Edificacoes: 1 } },
       { label: "C) Cuidando de plantas, animais ou lendo sobre a natureza.", score: { MeioAmbiente: 1 } },
       { label: "D) Explorando novos programas, sites ou aprendendo códigos.", score: { Informatica: 1 } },
       { label: "E) Organizando suas metas, finanças pessoais ou planejando eventos.", score: { Administracao: 1 } },
     ],
   },
-  // ✅ Substitua/adicione aqui suas perguntas...
+  {
+    id: "q6",
+    text: "Qual desses grupos de cursos superiores você vê possibilidades de estar cursando daqui a três anos?",
+    options: [
+      { label: "A) Engenharias de Automação e Indústria: Engenharia Elétrica, Mecatrônica, Mecânica, de Produção ou Metalúrgica.", score: { Eletromecanica: 1 } },
+      { label: "B) Construção, Arquitetura e Infraestrutura: Engenharia Civil, Arquitetura, Engenharia Ambiental, Cartográfica ou Sanitária.", score: { Edificacoes: 1 } },
+      { label: "C) Ciências da Natureza, Campo e Biologia: Gestão Ambiental, Ciências Ambientais, Agronomia, Engenharia Florestal ou Biologia.", score: { MeioAmbiente: 1 } },
+      { label: "D) Tecnologia da Informação e Computação: Ciência da Computação, Engenharia de Software, Sistemas de Informação ou Jogos Digitais.", score: { Informatica: 1 } },
+      { label: "E) Gestão de Negócios e Administração: Administração, Ciências Contábeis, Marketing, Logística ou Gestão Financeira.", score: { Administracao: 1 } },
+    ],
+  },
+  {
+    id: "q7",
+    text: "Qual desses cenários de trabalho mais lhe agrada?",
+    options: [
+      { label: "A) Fábricas e oficinas: operando máquinas, consertando motores e cuidando de sistemas elétricos.", score: { Eletromecanica: 1 } },
+      { label: "B) Canteiros de obras e escritórios de arquitetura: planejando prédios, medindo terrenos e acompanhando construções.", score: { Edificacoes: 1 } },
+      { label: "C) Ar livre e laboratórios: analisando a qualidade da água e do solo ou fiscalizando áreas de preservação.", score: { MeioAmbiente: 1 } },
+      { label: "D) Escritórios de tecnologia e home office: escrevendo códigos, criando sites e resolvendo problemas digitais.", score: { Informatica: 1 } },
+      { label: "E) Empresas e escritórios de negócios: organizando finanças, liderando equipes e criando estratégias de venda.", score: { Administracao: 1 } },
+    ],
+  },
+  {
+    id: "q8",
+    text: "Dentre as 5 opções de aulas práticas, qual delas desperta mais seu interesse?",
+    options: [
+      { label: "A) Oficina de Precisão e Mecânica: aprender a usar instrumentos de medida ultraprecisos (como micrômetros), operar serras elétricas e fazer roscas e furos perfeitos em peças de metal. (Baseado em: Metrologia e Ajustagem – Eletromecânica)", score: { Eletromecanica: 1 } },
+      { label: "B) Desenho de Projetos e Plantas: aprender as normas para desenhar casas e prédios, usando instrumentos de desenho e softwares de computador (CAD) para criar visões em 3D. (Baseado em: Desenho Técnico – Edificações)", score: { Edificacoes: 1 } },
+      { label: "C) Mapeamento e Satélites: aprender a ler mapas digitais, usar sistemas de GPS e entender como as imagens de satélite ajudam a monitorar o que acontece na superfície da Terra. (Baseado em: Geotecnologias Aplicadas – Meio Ambiente)", score: { MeioAmbiente: 1 } },
+      { label: "D) Lógica e Criação de Programas: aprender como o computador “pensa”, criando algoritmos, sites e aplicativos usando códigos, fluxogramas e estruturas de dados. (Baseado em: Algoritmos e Lógica – Informática)", score: { Informatica: 1 } },
+      { label: "E) Comportamento, Vendas e Marketing: aprender como as empresas contratam pessoas, como criar estratégias de venda e como funciona o marketing digital para conquistar clientes. (Baseado em: Gestão de Pessoas e Marketing – Administração)", score: { Administracao: 1 } },
+    ],
+  },
+  {
+    id: "q9",
+    text: "Ao realizar um trabalho, qual desses resultados finais traria mais satisfação para você?",
+    options: [
+      { label: "A) Ver uma máquina ou robô funcionando perfeitamente: sentir que você dominou a técnica para montar, consertar ou automatizar um equipamento complexo.", score: { Eletromecanica: 1 } },
+      { label: "B) Ver um prédio ou uma reforma sair do papel: sentir orgulho ao ver uma construção segura e bem planejada que você ajudou a projetar ou construir.", score: { Edificacoes: 1 } },
+      { label: "C) Ver um ecossistema sendo recuperado ou protegido: sentir que sua análise e fiscalização ajudaram a salvar um rio, uma floresta ou a reduzir a poluição.", score: { MeioAmbiente: 1 } },
+      { label: "D) Ver um sistema, site ou app sendo usado por milhares de pessoas: sentir que sua lógica e seus códigos criaram uma solução digital útil e inovadora.", score: { Informatica: 1 } },
+      { label: "E) Ver uma empresa crescer e sua equipe motivada: sentir que sua organização financeira e estratégias de marketing fizeram um negócio ter sucesso.", score: { Administracao: 1 } },
+    ],
+  },
+  {
+    id: "q10",
+    text: "Imagine um desafio, um problema a ser resolvido. Qual reação você escolheria para encontrar a solução?",
+    options: [
+      { label: "A) Colocar a mão na massa e usar ferramentas: prefiro abrir, desmontar ou ajustar as peças físicas até entender como consertar o que parou de funcionar.", score: { Eletromecanica: 1 } },
+      { label: "B) Analisar o espaço e buscar uma solução visual: prefiro fazer um esboço, medir as possibilidades e reorganizar a estrutura para que tudo fique seguro e no lugar certo.", score: { Edificacoes: 1 } },
+      { label: "C) Investigar as causas e os impactos ao redor: prefiro observar o ambiente, coletar informações e buscar uma solução que não prejudique o que está em volta.", score: { MeioAmbiente: 1 } },
+      { label: "D) Usar a lógica e criar uma solução digital: prefiro me sentar à frente do computador e desenvolver um código, um comando ou uma automação que resolva o problema.", score: { Informatica: 1 } },
+      { label: "E) Conversar, negociar e organizar a equipe: prefiro reunir as pessoas envolvidas, gerenciar os recursos disponíveis e liderar o plano de ação para resolver o desafio.", score: { Administracao: 1 } },
+    ],
+  },
+  {
+    id: "q11",
+    text: "No Ensino Médio Integrado, qual destas áreas de estudo você acha que será a sua favorita e/ou terá mais facilidade?",
+    options: [
+      { label: "A) Matemática aplicada e Física (Cálculos e Movimento): você gosta de entender as leis da física e usar a matemática para calcular forças, potência e o funcionamento de máquinas.", score: { Eletromecanica: 1 } },
+      { label: "B) Matemática espacial e Geometria (Formas e Medidas): você tem facilidade em visualizar figuras geométricas, calcular áreas e usar o raciocínio lógico para desenhar e projetar estruturas.", score: { Edificacoes: 1 } },
+      { label: "C) Ciências da Natureza e Biologia (Ecossistemas e Vida): você prefere estudar os seres vivos, os ciclos da natureza e como a química e a biologia explicam o mundo natural.", score: { MeioAmbiente: 1 } },
+      { label: "D) Linguagens e Lógica Matemática (Códigos e Raciocínio): você gosta de estruturar o pensamento, aprender novas linguagens (mesmo que sejam de programação) e resolver desafios lógicos complexos.", score: { Informatica: 1 } },
+      { label: "E) Ciências Humanas e Linguagens (Sociedade e Comunicação): você se interessa por história, sociologia e pela forma como as pessoas se organizam, se comunicam e consomem na sociedade.", score: { Administracao: 1 } },
+    ],
+  },
 ];
 
 // Textos extras (opcional): aparecem junto do resultado
@@ -498,6 +563,10 @@ function renderResult(app){
 
   app.classList.add("result");
   app.appendChild(el("h2", {}, "Resultado do teste"));
+
+  app.appendChild(el("h3", {}, "Atenção: A função dessa atividade é ajudar você a refletir sobre seus interesses e afinidades, não é um teste definitivo. Use o resultado como um guia para explorar mais sobre os cursos, conversar com professores e alunos, e descobrir o que realmente te motiva. O mais importante é escolher um caminho que te faça feliz e realizado!"));
+
+  
   app.appendChild(el("p", {class:"muted"},
     `Com base nas suas respostas, o curso mais indicado é: `
   ));
